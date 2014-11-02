@@ -17,6 +17,9 @@
     <a href="{{ url_for('posts', post=post + 1) }}">&rarr; Newer</a>
     </li>
     {% endif %}
+    <li class="edit">
+    <a href="edit/{{post}}">Edit Post</a>
+	</li>
 </ul>
 
 

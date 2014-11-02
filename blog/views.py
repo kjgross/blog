@@ -76,3 +76,27 @@ def add_post_post():
     session.add(post)
     session.commit()
     return redirect(url_for("posts"))
+
+
+@app.route("/post/edit/<int:post_id>", methods=["GET"])
+def edit_post_get(post_id):
+
+	posts = session.query(Post)
+	posts = posts[post_id]
+
+	return render_template("edit_post.html",
+    	post_id=posts
+	)
+
+@app.route("/post/edit/<int:post>", methods=["POST"])
+def edit_post_post():
+    post = Post(
+        title=request.form["title"],
+        content=mistune.markdown(request.form["content"]),
+    )
+
+    session.update(post)
+    session.commit()
+    return redirect(url_for("posts"))
+
+
