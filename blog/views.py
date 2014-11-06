@@ -90,13 +90,13 @@ def add_post_post():
 
 @app.route("/post/edit/<int:post_id>", methods=["GET"])
 @login_required
-def edit_post_get(post_id, title, content):
+def edit_post_get(post_id):
 
 	posts = session.query(Post)
 	posts = posts[post_id]
 
 	return render_template("edit_post.html",
-    	post_id=posts
+    	post=posts
 	)
 
 @app.route("/post/edit/<int:post>", methods=["POST"])
