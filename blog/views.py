@@ -90,7 +90,7 @@ def add_post_post():
 
 @app.route("/post/edit/<int:post_id>", methods=["GET"])
 @login_required
-def edit_post_get(post_id):
+def edit_post_get(post_id, title, content):
 
 	posts = session.query(Post)
 	posts = posts[post_id]
@@ -101,13 +101,13 @@ def edit_post_get(post_id):
 
 @app.route("/post/edit/<int:post>", methods=["POST"])
 @login_required
-def edit_post_post():
+def edit_post_post(post):
     post = Post(
         title=request.form["title"],
         content=mistune.markdown(request.form["content"]),
     )
 
-    session.update(post)
+    session.merge(post)
     session.commit()
     return redirect(url_for("posts"))
 
@@ -130,4 +130,23 @@ def login_post():
     return redirect(request.args.get('next') or url_for("posts"))  
 
 
+@app.route("/post/delete/<int:post_id>", methods=["GET"])
+@login_required
+def delete_post_get(post_id):
+
+	posts = session.query(Post)
+	posts = posts[post_id]
+
+	return render_template("delete_post.html",
+    	post_id=posts
+	)
+
+@app.route("/post/delete/<int:post>", methods=["POST"])
+@login_required
+def delete_post_post(post):
+    
+
+    session.delete(post)
+    session.commit()
+    return redirect(url_for("posts"))
 
