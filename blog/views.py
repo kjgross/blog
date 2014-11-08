@@ -11,7 +11,7 @@ from flask.ext.login import login_user, current_user
 from werkzeug.security import check_password_hash
 from models import User
 
-from flask.ext.login import login_required
+from flask.ext.login import login_required, logout_user
 
 
 @app.route("/")
@@ -134,6 +134,14 @@ def login_post():
     return redirect(request.args.get('next') or url_for("posts"))  
 
 
+@app.route("/logout", methods=["GET"])
+@login_required
+def logout():
+	logout_user()
+	return redirect(url_for("posts"))
+
+
+
 @app.route("/post/delete/<int:post_id>", methods=["GET"])
 @login_required
 def delete_post_get(post_id):
@@ -154,4 +162,7 @@ def delete_post_post(post):
     session.delete(posts)
     session.commit()
     return redirect(url_for("posts"))
+
+
+
 
