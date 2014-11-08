@@ -102,14 +102,18 @@ def edit_post_get(post_id):
 @app.route("/post/edit/<int:post>", methods=["POST"])
 @login_required
 def edit_post_post(post):
-    post = Post(
-        title=request.form["title"],
-        content=mistune.markdown(request.form["content"]),
-    )
+	posts = session.query(Post)
+	posts = posts[post]
+    # post = Post(
+    #     title=request.form["title"],
+    #     content=request.form["content"]
+    # )
+	posts.title=request.form["title"]
+	posts.content=request.form["content"]
 
-    session.merge(post)
-    session.commit()
-    return redirect(url_for("posts"))
+    #session.merge(post)
+	session.commit()
+	return redirect(url_for("posts"))
 
 
 @app.route("/login", methods=["GET"])
