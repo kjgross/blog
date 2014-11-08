@@ -148,9 +148,10 @@ def delete_post_get(post_id):
 @app.route("/post/delete/<int:post>", methods=["POST"])
 @login_required
 def delete_post_post(post):
-    
+    posts= session.query(Post)
+    posts= posts[post]
 
-    session.delete(post)
+    session.delete(posts)
     session.commit()
     return redirect(url_for("posts"))
 
